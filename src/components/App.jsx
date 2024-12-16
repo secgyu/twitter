@@ -19,12 +19,7 @@ function App() {
       setInit(true);
     });
   }, []);
-  return (
-    <>
-      {init ? <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> : "initalizing..."}
-      <footer>&copy; {new Date().getFullYear()} Twitter</footer>
-    </>
-  );
+  return <>{init ? <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} /> : "initalizing..."}</>;
 }
 
 export default App;
