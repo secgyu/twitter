@@ -3,8 +3,15 @@ import Home from "@/routes/Home";
 import Auth from "@/routes/Auth";
 import Navigation from "./Navigation";
 import Profile from "@/routes/Profile";
+import { User } from "@/models/user";
 
-const AppRouter = ({ isLoggedIn, userObj, refreshUser }) => {
+interface Props {
+  isLoggedIn: boolean;
+  userObj: User;
+  refreshUser: () => void;
+}
+
+const AppRouter = ({ isLoggedIn, userObj, refreshUser }: Props) => {
   return (
     <div>
       {isLoggedIn && <Navigation userObj={userObj} />}

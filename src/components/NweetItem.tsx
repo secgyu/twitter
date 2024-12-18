@@ -1,11 +1,17 @@
 import { dbService, storageService } from "@/fbase";
+import { Nweet } from "@/models/nweet";
 import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
-const Nweet = ({ nweetObj, isOwner }) => {
+interface Props {
+  nweetObj: Nweet;
+  isOwner: boolean;
+}
+
+const NweetItem = ({ nweetObj, isOwner }: Props) => {
   const [editing, setEditing] = useState(false);
   const [newNweet, setNewNweet] = useState(nweetObj.text);
 
@@ -29,7 +35,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
   const toggleEditing = () => setEditing((prev) => !prev);
 
   // 입력값 변경
-  const onChange = (event) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
@@ -37,7 +43,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
   };
 
   // 업데이트 로직
-  const onSubmit = async (event) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const nweetDocRef = doc(dbService, "nweets", nweetObj.id);
     await updateDoc(nweetDocRef, { text: newNweet });
@@ -76,4 +82,4 @@ const Nweet = ({ nweetObj, isOwner }) => {
   );
 };
 
-export default Nweet;
+export default NweetItem;

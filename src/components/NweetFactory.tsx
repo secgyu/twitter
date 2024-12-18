@@ -2,15 +2,20 @@ import { v4 as uuidv4 } from "uuid";
 import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 import { dbService, storageService } from "@/fbase";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { User } from "@/models/user";
 
-const NweetFactory = ({ userObj }) => {
+interface Props {
+  userObj: User;
+}
+
+const NweetFactory = ({ userObj }: Props) => {
   const [nweet, setNweet] = useState("");
   const [attachment, setAttachment] = useState("");
 
-  const onSubmit = async (event) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (nweet === "") {
       return;
@@ -36,24 +41,23 @@ const NweetFactory = ({ userObj }) => {
     setAttachment(""); // 이미지 초기화
   };
 
-  const onChange = (event) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
     setNweet(value);
   };
 
-  const onFileChange = (event) => {
+  const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
     } = event;
+    if (files == null || files?.length === 0) return;
     const theFile = files[0];
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
-      const {
-        currentTarget: { result },
-      } = finishedEvent;
-      setAttachment(result); // Base64 데이터 저장
+      const currentTarget = finishedEvent.currentTarget as FileReader;
+      setAttachment(currentTarget.result as string);
     };
     if (theFile) {
       reader.readAsDataURL(theFile);

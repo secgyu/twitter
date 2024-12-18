@@ -1,9 +1,14 @@
+import { User } from "@/models/user";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
-const Navigation = ({ userObj }) => {
+interface Props {
+  userObj: User;
+}
+
+const Navigation = ({ userObj }: Props) => {
   return (
     <nav>
       <ul style={{ display: "flex", justifyContent: "center", marginTop: 50 }}>

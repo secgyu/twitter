@@ -1,5 +1,5 @@
 import { authService } from "@/fbase";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 const AuthForm = () => {
@@ -8,7 +8,7 @@ const AuthForm = () => {
   const [newAccount, setNewAccount] = useState(true);
   const [error, setError] = useState("");
 
-  const onChange = (event) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
     } = event;
@@ -18,7 +18,7 @@ const AuthForm = () => {
       setPassword(value);
     }
   };
-  const onSubmit = async (event) => {
+  const onSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       let data;
@@ -28,6 +28,7 @@ const AuthForm = () => {
         data = await signInWithEmailAndPassword(authService, email, password);
       }
     } catch (error) {
+      if (!(error instanceof Error)) return;
       setError(error.message);
     }
   };

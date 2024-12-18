@@ -3,19 +3,18 @@ import AuthForm from "@/components/AuthForm";
 import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons";
+import { MouseEvent } from "react";
 
 const Auth = () => {
-  const onSocialClick = async (event) => {
-    const {
-      target: { name },
-    } = event;
+  const onSocialClick = async (event: MouseEvent<HTMLButtonElement>) => {
+    const name = event.currentTarget.name;
     let provider;
     if (name === "google") {
       provider = new GoogleAuthProvider();
     } else if (name === "github") {
       provider = new GithubAuthProvider();
     }
-    const data = await signInWithPopup(authService, provider);
+    const data = await signInWithPopup(authService, provider!);
   };
 
   return (

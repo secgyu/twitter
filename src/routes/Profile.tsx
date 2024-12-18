@@ -1,19 +1,25 @@
 import { authService } from "@/fbase";
+import { User } from "@/models/user";
 import { updateProfile } from "firebase/auth";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
-const Profile = ({ userObj, refreshUser }) => {
+interface Props {
+  userObj: User;
+  refreshUser: () => void;
+}
+
+const Profile = ({ userObj, refreshUser }: Props) => {
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
   const onLogOutClick = () => authService.signOut();
 
-  const onChange = (event) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
     setNewDisplayName(value);
   };
 
-  const onSubmit = async (event) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const user = authService.currentUser; // 현재 사용자 가져오기
     if (user && user.displayName !== newDisplayName) {
